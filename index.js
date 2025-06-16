@@ -1,16 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mercadopago = require('mercadopago');
-const dotenv = require('dotenv');
-
-dotenv.config(); // Carga las variables del archivo .env
-
-console.log('TOKEN ENCONTRADO:', process.env.MP_ACCESS_TOKEN); // DEBUG opcional
-
-// Configura Mercado Pago con el token del .env
-mercadopago.configure({
-  access_token: process.env.MP_ACCESS_TOKEN,
-});
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,34 +9,51 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-// Ruta para crear preferencia
-app.post(['/crear-preferencia', '/create_preference'], async (req, res) => {
+// Configurar credencial de acceso
+mercadopago.configure({
+  access_token: process.env.MP_ACCESS_TOKEN,
+});
+
+// Ruta principal para probar que el backend está vivo
+app.get('/', (req, res) => {
+  res.send('⚡ Backend FOGO MercadoPago está corriendo.');
+});
+
+// Ruta para crear preferencia de pago
+app.post('/crear-preferencia', async (req, res) => {
   try {
-    const { items, back_urls } = req.body;
+    const { items } = req.body;
+
+    console.log('🧾 Items recibidos:', items);
 
     const preference = {
-      items,
-      back_urls: back_urls || {
-        success: 'https://soyfogo.com/pages/gracias',
-        failure: 'https://soyfogo.com/pages/error',
-        pending: 'https://soyfogo.com/pages/pendiente',
+      items: items.map(item => ({
+        title: item.title,
+        unit_price: Number(item.unit_price),
+        quantity: Number(item.quantity),
+        currency_id: 'COP',
+      })),
+      back_urls: {
+        success: process.env.BACK_URL_SUCCESS,
+        failure: process.env.BACK_URL_FAILURE,
+        pending: process.env.BACK_URL_FAILURE,
       },
       auto_return: 'approved',
-      currency_id: 'COP', // 👈 Asegura que el pago sea en pesos colombianos
     };
 
-    const response = await mercadopago.preferences.create(preference);
-    res.json({ init_point: response.body.init_point });
+    console.log('📦 Preferencia a enviar:', preference);
 
+    const response = await mercadopago.preferences.create(preference);
+    console.log('✅ Preferencia creada:', response.body.init_point);
+
+    res.json({ init_point: response.body.init_point });
   } catch (error) {
-    console.error('❌ Error al crear preferencia:', error.message);
-    res.status(500).json({ error: 'No se pudo crear la preferencia' });
+    console.error('❌ Error al crear la preferencia:', error);
+    res.status(500).json({ error: 'Error al crear la preferencia' });
   }
 });
 
-// Levanta el servidor
 app.listen(PORT, () => {
-  console.log(`✅ Servidor FOGO corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
 });
-
 
