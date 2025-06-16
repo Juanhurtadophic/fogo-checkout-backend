@@ -4,16 +4,13 @@ const mercadopago = require('mercadopago');
 require('dotenv').config();
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 
-// Configurar credenciales de Mercado Pago
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
 });
 
-// Ruta para crear la preferencia
 app.post('/crear-preferencia', async (req, res) => {
   try {
     const { items, back_urls } = req.body;
@@ -32,8 +29,7 @@ app.post('/crear-preferencia', async (req, res) => {
   }
 });
 
-// Escuchar en el puerto dinámico de Railway
-const PORT = process.env.PORT; // ⚠️ IMPORTANTE: No pongas || 3000
+const PORT = process.env.PORT; // ⚠️ SIN || 3000
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
