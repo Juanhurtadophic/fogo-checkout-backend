@@ -1,0 +1,30 @@
+<script>
+  window.pixelId = "679bb01f03e5574fccb5e441";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+
+<script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-subids
+  async
+  defer
+></script>
+
+---------------
+
+https://go.agenciamasterllc.com/landing-vsl?utm_source=FB&utm_campaign={{campaign.name}}|{{campaign.id}}&utm_medium={{adset.name}}|{{adset.id}}&utm_content={{ad.name}}|{{ad.id}}&utm_term={{placement}}&xcod=FBhQwK21wXxR{{campaign.name}}|{{campaign.id}}hQwK21wXxR{{adset.name}}|{{adset.id}}hQwK21wXxR{{ad.name}}|{{ad.id}}hQwK21wXxR{{placement}}
+
+----------
+
+https://pay.hotmart.com/V97686228Y?src=test-inicials&off=x711yfle&checkoutMode=10
+
+------------------------
+vsl
+
+https://pay.hotmart.com/V97686228Y?src=test-inicial-fb&off=x711yfle&checkoutMode=10
+
+e1a91f
